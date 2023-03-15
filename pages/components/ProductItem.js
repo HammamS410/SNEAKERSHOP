@@ -1,0 +1,24 @@
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+
+export default function ProductItem({ product }) {
+  return (
+    <div className="card">
+      <Link href={`/product/${product.slug}`}>
+        <Image width={480} height={480} src={product.image} alt={product.name} className="rounded shadow mx-auto mt-5" />
+      </Link>
+
+      <div className="flex flex-col items-center justify-center p-3">
+        <Link href={`/product/${product.slug}`}>
+          <h2 className="text-lg">{product.name}</h2>
+        </Link>
+        <p className="text-sm">{product.brand}</p>
+        <p className="text-lg font-semibold">$ {product.price}</p>
+        <button className="primary-button" type="button">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  );
+}
