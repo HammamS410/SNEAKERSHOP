@@ -10,7 +10,7 @@ const data = {
       rating: 4.0,
       numReviews: 10,
       countInStock: 12,
-      discount: 10,
+      discount: 0.1,
       description: "Nike Air Jordan series",
     },
     {
