@@ -22,6 +22,7 @@ export default NextAuth({
   },
   providers: [
     CredentialsProvider({
+      server: process.env.MOGODB_URI,
       async authorize(credentials) {
         await db.connect();
         const user = await User.findOne({
@@ -41,4 +42,5 @@ export default NextAuth({
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
 });

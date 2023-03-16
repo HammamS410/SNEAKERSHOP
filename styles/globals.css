@@ -31,3 +31,9 @@ textarea {
   ring-indigo-300
   focus:ring;
 }
+
+.dropdown-link {
+  @apply flex
+  p-2
+  hover:bg-gray-200;
+}
