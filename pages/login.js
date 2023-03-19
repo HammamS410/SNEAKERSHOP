@@ -78,7 +78,9 @@ export default function LoginScreen() {
         </div>
         <div className="mb-4">
           Don&apos;t have an account ? &nbsp;
-          <Link href={`/register?redirect=${redirect || "/"}`}>Register</Link>
+          <Link className="text-blue-700" href={`/register?redirect=${redirect || "/"}`}>
+            Register
+          </Link>
         </div>
       </form>
     </Layout>

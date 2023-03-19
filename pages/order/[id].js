@@ -56,45 +56,49 @@ function OrderScreen() {
       ) : (
         <div className="grid md:grid-cols-4 md:gap-5">
           <div className="overflow-x-auto md:col-span-3">
-            <div className="card p-5">Shipping Address</div>
-            <div>
-              {shippingAddress.fullName},{shippingAddress.address},{shippingAddress.city},{shippingAddress.postalCode},{shippingAddress.country},
+            <div className="card p-5">
+              <h2 className="mb-2 text-lg font-semibold">Shipping Address</h2>
+              <div>
+                {shippingAddress.fullName},{shippingAddress.address},{shippingAddress.city},{shippingAddress.postalCode},{shippingAddress.country},
+              </div>
+              {isDelivered ? <div className="alert-success font-semibold">Delivered at {deliveredAt}</div> : <div className="alert-error font-semibold">Not Delivered</div>}
             </div>
-            {isDelivered ? <div className="alert-success">Delivered at {deliveredAt}</div> : <div className="alert-error">Not Delivered</div>}
 
-            <div className="card p-5">Payment Method</div>
-            <div>{paymentMethod}</div>
-            {isPaid ? <div className="alert-success">Paid at {paidAt}</div> : <div className="alert-error">Not Paid</div>}
-          </div>
+            <div className="card p-5">
+              <h2 className="mb-2 text-lg font-semibold">Payment Method</h2>
+              <div>{paymentMethod}</div>
+              {isPaid ? <div className="alert-success font-semibold">Paid at {paidAt}</div> : <div className="alert-error font-semibold">Not Paid</div>}
+            </div>
 
-          <div className="card overflow-x-auto p-5">
-            <h2 className="mb-2 text-lg">Order Items</h2>
-            <table className="min-w-full">
-              <thead className="border-b">
-                <tr>
-                  <th className="p-5 text-left">Item</th>
-                  <th className="p-5 text-right">Quantity</th>
-                  <th className="p-5 text-right">Price</th>
-                  <th className="p-5 text-right">Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orderItems.map((item) => (
-                  <tr key={item._id} className="border-b">
-                    <td>
-                      <Link className="flex items-center" href={`/product/${item.slug}`}>
-                        <Image src={item.image} alt={item.name} width={50} height={50} />
-                        &nbsp;
-                        {item.name}
-                      </Link>
+            <div className="card overflow-x-auto p-5">
+              <h2 className="mb-2 text-lg font-semibold">Order Items</h2>
+              <table className="min-w-full">
+                <thead className="border-b">
+                  <tr>
+                    <th className="p-5 text-left">Item</th>
+                    <th className="p-5 text-right">Quantity</th>
+                    <th className="p-5 text-right">Price</th>
+                    <th className="p-5 text-right">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderItems.map((item) => (
+                    <tr key={item._id} className="border-b">
+                      <td>
+                        <Link className="flex items-center" href={`/product/${item.slug}`}>
+                          <Image src={item.image} alt={item.name} width={50} height={50}></Image>
+                          &nbsp;
+                          {item.name}
+                        </Link>
+                      </td>
                       <td className="p-5 text-right">{item.quantity}</td>
                       <td className="p-5 text-right">${item.price}</td>
                       <td className="p-5 text-right">${item.quantity * item.price}</td>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
           <div>
             <div className="card p-5">

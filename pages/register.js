@@ -33,6 +33,7 @@ export default function RegisterScreen() {
       });
       const result = await signIn("credentials", {
         redirect: false,
+
         email,
         password,
       });
@@ -115,7 +116,9 @@ export default function RegisterScreen() {
         </div>
         <div className="mb-4">
           Don&apos;t have an account ? &nbsp;
-          <Link href={`/register?redirect=${redirect || "/"}`}>Register</Link>
+          <Link className="text-blue-700" href={`/register?redirect=${redirect || "/"}`}>
+            Register
+          </Link>
         </div>
       </form>
     </Layout>
