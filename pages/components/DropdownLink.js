@@ -4,7 +4,7 @@ import React from "react";
 export default function DropdownLink(props) {
   const { href, children, ...rest } = props;
   return (
-    <Link legacyBehavior href={href}>
+    <Link legacyBehavior href={`${href}`}>
       <a {...rest}>{children}</a>
     </Link>
   );
