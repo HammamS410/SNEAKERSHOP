@@ -1,8 +1,10 @@
+import Product from "@/models/Product";
+import db from "@/utils/db";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-function ProductItem({ product, addToCartHandler }) {
+export default function ProductItem({ product, addToCartHandler }) {
   return (
     <div className="card">
       <Link href={`/product/${product.slug}`}>
@@ -23,4 +25,12 @@ function ProductItem({ product, addToCartHandler }) {
   );
 }
 
-export default ProductItem;
+export async function getServerSideProps() {
+  await db.connect();
+  const product = await Product.find().lean();
+  return {
+    props: {
+      product: product.map(db.convertDocToObj),
+    },
+  };
+}
