@@ -26,12 +26,11 @@ export default function RegisterScreen() {
   } = useForm();
   const submitHandler = async ({ name, email, password }) => {
     try {
-      await axios.post("/api/auth/signup"),
-        {
-          name,
-          email,
-          password,
-        };
+      await axios.post("/api/auth/signup", {
+        name,
+        email,
+        password,
+      });
       const result = await signIn("credentials", {
         redirect: false,
         email,
@@ -76,7 +75,6 @@ export default function RegisterScreen() {
             })}
             className="w-full"
             id="email"
-            autoFocus
           />
           {errors.email && <div className="text-red-600">{errors.email.message}</div>}
         </div>
@@ -91,7 +89,6 @@ export default function RegisterScreen() {
             })}
             className="w-full"
             id="password"
-            autoFocus
           />
           {errors.password && <div className="text-red-600">{errors.password.message}</div>}
         </div>
@@ -102,7 +99,6 @@ export default function RegisterScreen() {
             type="password"
             className="w-full"
             id="confirmPassword"
-            autoFocus
             {...register("confirmPassword", {
               required: "Please enter confirm password",
               validate: (value) => value === getValues("password"),
@@ -111,7 +107,7 @@ export default function RegisterScreen() {
           />
           {errors.confirmPassword && <div className="text-red-600">{errors.confirmPassword.message}</div>}
 
-          {errors.confirmPassword && errors.confirmPassword.type === "validate" && <div className="text-red-600">{errors.confirmPassword.message}</div>}
+          {errors.confirmPassword && errors.confirmPassword.type === "validate" && <div className="text-red-600">Password not match</div>}
         </div>
 
         <div className="mb-4">
