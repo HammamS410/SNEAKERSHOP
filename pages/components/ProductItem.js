@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function ProductItem({ product, addToCartHandler }) {
+function ProductItem({ product, addToCartHandler }) {
   return (
     <div className="card">
       <Link href={`/product/${product.slug}`}>
-        <Image width={480} height={480} src={product.image} alt={product.name} className="rounded shadow mx-auto mt-5" />
+        <Image width={480} height={360} src={product.image} alt={product.name} className="rounded shadow mx-auto mt-5" />
       </Link>
 
       <div className="flex flex-col items-center justify-center p-3">
@@ -22,3 +22,5 @@ export default function ProductItem({ product, addToCartHandler }) {
     </div>
   );
 }
+
+export default ProductItem;
