@@ -63,6 +63,15 @@ export default function Layout({ title, children }) {
                         Order History
                       </DropdownLink>
                     </Menu.Item>
+
+                    {session.user.isAdmin && (
+                      <Menu.Item>
+                        <DropdownLink className="dropdown-link" href="/admin/dashboard">
+                          Admin Dashboard
+                        </DropdownLink>
+                      </Menu.Item>
+                    )}
+
                     <Menu.Item>
                       <div className="dropdown-link" href="#" onClick={logoutClickHandler}>
                         Logout
