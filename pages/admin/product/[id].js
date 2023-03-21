@@ -15,6 +15,21 @@ function reducer(state, action) {
       return { ...state, loading: false, error: "" };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
+
+    case "UPDATE_REQUEST":
+      return { ...state, loadingUpdate: true, errorUpdate: "" };
+    case "UPDATE_SUCCESS":
+      return { ...state, loadingUpdate: false, errorUpdate: "" };
+    case "UPDATE_FAIL":
+      return { ...state, loadingUpdate: false, errorUpdate: action.payload };
+
+    case "UPLOAD_REQUEST":
+      return { ...state, loadingUpload: true, errorUpload: "" };
+    case "UPLOAD_SUCCESS":
+      return { ...state, loadingUpload: false, errorUpload: "" };
+    case "UPLOAD_FAIL":
+      return { ...state, loadingUpload: false, errorUpload: action.payload };
+
     default:
       return state;
   }
@@ -23,7 +38,7 @@ function reducer(state, action) {
 export default function AdminProductEditScreen() {
   const { query } = useRouter();
   const productId = query.id;
-  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
@@ -58,6 +73,32 @@ export default function AdminProductEditScreen() {
   }, [productId, setValue]);
 
   const router = useRouter();
+
+  const uploadHandler = async (e, imageField = "image") => {
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+    const {
+      data: { signature, timestamp },
+    } = await axios("/api/admin/cloudinary-sign");
+
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("signature", signature);
+    formData.append("timestamp", timestamp);
+    formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+    const { data } = await axios.post(url, formData);
+
+    dispatch({ type: "UPLOAD_SUCCESS" });
+    setValue(imageField, data.secure_url);
+    toast.success("File successfully updated");
+
+    try {
+      dispatch({ type: "UPLOAD_REQUEST" });
+    } catch (error) {
+      dispatch({ type: "UPLOAD_FAIL", payload: getError(error) });
+      toast.error(getError(error));
+    }
+  };
 
   const submitHandler = async ({ name, slug, price, category, image, brand, countInStock, description }) => {
     try {
@@ -165,6 +206,11 @@ export default function AdminProductEditScreen() {
                 />
                 {errors.image && <div className="text-red-600">{errors.image.message}</div>}
               </div>
+              <div className="mb-4">
+                <label htmlFor="imageFile">Upload Image</label>
+                <input type="file" className="w-full" id="imageFile" onChange={uploadHandler} />
+              </div>
+              {loadingUpload && <div>Loading...</div>}
               <div className="mb-4">
                 <label htmlFor="category">Category</label>
                 <input
