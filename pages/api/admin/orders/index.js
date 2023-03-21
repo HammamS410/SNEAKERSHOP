@@ -5,7 +5,7 @@ import { getSession } from "next-auth/react";
 const handler = async (req, res) => {
   const session = await getSession({ req });
   if (!session || (session && !session.user.isAdmin)) {
-    return res.status(401).send("signin required");
+    return res.status(401).send({ message: "signin required" });
   }
   if (req.method === "GET") {
     await db.connect();
