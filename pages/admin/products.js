@@ -93,9 +93,11 @@ export default function AdminProductsScreen() {
                       <td className="p-5">{product.countInStock}</td>
                       <td className="p-5">{product.rating}</td>
                       <td className="p-5">
-                        <Link href={`/admin/product/${product._id}`}>Edit</Link>
+                        <Link href={`/admin/product/${product._id}`} className="text-yellow-600 mr-2">
+                          Edit
+                        </Link>
                         &nbsp;
-                        <button>Delete</button>
+                        <button className="text-red-700 font-semibold">Delete</button>
                       </td>
                     </tr>
                   ))}
