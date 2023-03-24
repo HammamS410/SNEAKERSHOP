@@ -1,7 +1,6 @@
 import { getError } from "@/utils/error";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useEffect, useReducer } from "react";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
@@ -11,15 +10,10 @@ function reducer(state, action) {
     case "FETCH_REQUEST":
       return { ...state, loading: true, error: "" };
     case "FETCH_SUCCESS":
-      return { ...state, loading: false, products: action.payload, error: "" };
+      return { ...state, loading: false, users: action.payload, error: "" };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-    case "CREATE_REQUEST":
-      return { ...state, loadingCreate: true };
-    case "CREATE_SUCCESS":
-      return { ...state, loadingCreate: false };
-    case "CREATE_FAIL":
-      return { ...state, loadingCreate: false };
+
     case "DELETE_REQUEST":
       return { ...state, loadingDelete: true };
     case "DELETE_SUCCESS":
@@ -32,35 +26,18 @@ function reducer(state, action) {
       return state;
   }
 }
-export default function AdminProductsScreen() {
-  const router = useRouter();
-  const [{ loading, error, products, loadingCreate, loadingDelete, successDelete }, dispatch] = useReducer(reducer, {
+function AdminUsersScreen() {
+  const [{ loading, error, users, loadingDelete, successDelete }, dispatch] = useReducer(reducer, {
     loading: true,
-    products: [],
+    users: [],
     error: "",
   });
-
-  const createHandler = async () => {
-    if (!window.confirm("Are you sure?")) {
-      return;
-    }
-    try {
-      dispatch({ type: "CREATE_REQUEST" });
-      const { data } = await axios.post(`/api/admin/products`);
-      dispatch({ type: "CREATE_SUCCESS" });
-      toast.success("Product created successfully");
-      router.push(`/admin/product/${data.product._id}`);
-    } catch (err) {
-      dispatch({ type: "CREATE_FAIL" });
-      toast.error(getError(err));
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/admin/products`);
+        const { data } = await axios.get(`/api/admin/users`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
@@ -73,22 +50,23 @@ export default function AdminProductsScreen() {
     }
   }, [successDelete]);
 
-  const deleteHandler = async (productId) => {
+  const deleteHandler = async (userId) => {
     if (!window.confirm("Are you sure?")) {
       return;
     }
     try {
       dispatch({ type: "DELETE_REQUEST" });
-      await axios.delete(`/api/admin/products/${productId}`);
+      await axios.delete(`/api/admin/users/${userId}`);
       dispatch({ type: "DELETE_SUCCESS" });
-      toast.success("Product deleted successfully");
+      toast.success("User deleted successfully");
     } catch (err) {
       dispatch({ type: "DELETE_FAIL" });
       toast.error(getError(err));
     }
   };
+
   return (
-    <Layout title="Admin Products">
+    <Layout title="Users">
       <div className="grid md:grid-cols-4 md:gap-5">
         <div>
           <ul>
@@ -104,24 +82,20 @@ export default function AdminProductsScreen() {
             </li>
             <li>
               <Link href="/admin/products">
-                <div className="text-blue-700 font-bold">Products</div>
+                <div className="text-blue-700">Products</div>
               </Link>
             </li>
             <li>
               <Link href="/admin/users">
-                <div className="text-blue-700">Users</div>
+                <div className="text-blue-700 font-bold">Users</div>
               </Link>
             </li>
           </ul>
         </div>
         <div className="overflow-x-auto md:col-span-3">
-          <div className="flex justify-between">
-            <h1 className="mb-4 text-xl">Products</h1>
-            {loadingDelete && <div>Deleting item...</div>}
-            <button disabled={loadingCreate} onClick={createHandler} className="primary-button">
-              {loadingCreate ? "Loading" : "Create"}
-            </button>
-          </div>
+          <h1 className="mb-4 text-xl">Users</h1>
+          {loadingDelete && <div>Deleting item...</div>}
+
           {loading ? (
             <div>Loading...</div>
           ) : error ? (
@@ -133,28 +107,24 @@ export default function AdminProductsScreen() {
                   <tr>
                     <th className="px-5 text-left">ID</th>
                     <th className="p-5 text-left">NAME</th>
-                    <th className="p-5 text-left">PRICE</th>
-                    <th className="p-5 text-left">CATEGORY</th>
-                    <th className="p-5 text-left">COUNT</th>
-                    <th className="p-5 text-left">RATING</th>
+                    <th className="p-5 text-left">EMAIL</th>
+                    <th className="p-5 text-left">ADMIN</th>
                     <th className="p-5 text-left">ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
-                    <tr key={product._id} className="border-b">
-                      <td className="p-5">{product._id.substring(20, 24)}</td>
-                      <td className="p-5">{product.name}</td>
-                      <td className="p-5">{product.price}</td>
-                      <td className="p-5">{product.category}</td>
-                      <td className="p-5">{product.countInStock}</td>
-                      <td className="p-5">{product.rating}</td>
+                  {users.map((user) => (
+                    <tr key={user._id} className="border-b">
+                      <td className="p-5">{user._id.substring(20, 24)}</td>
+                      <td className="p-5">{user.name}</td>
+                      <td className="p-5">{user.email}</td>
+                      <td className="p-5">{user.isAdmin ? "Yes" : "No"}</td>
                       <td className="p-5">
-                        <Link href={`/admin/product/${product._id}`} type="button" className="default-button">
+                        <Link href={`/admin/user/${user._id}`} type="button" className="default-button">
                           Edit
                         </Link>
                         &nbsp;
-                        <button onClick={() => deleteHandler(product._id)} type="button" className="default-button">
+                        <button onClick={() => deleteHandler(user._id)} type="button" className="default-button">
                           Delete
                         </button>
                       </td>
@@ -170,4 +140,5 @@ export default function AdminProductsScreen() {
   );
 }
 
-AdminProductsScreen.auth = { adminOnly: true };
+AdminUsersScreen.auth = { adminOnly: true };
+export default AdminUsersScreen;
