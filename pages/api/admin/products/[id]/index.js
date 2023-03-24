@@ -49,13 +49,10 @@ const putHandler = async (req, res) => {
 };
 
 const deleteHandler = async (req, res) => {
-  await db.connect();
-  const product = await Product.findByIdAndDelete(req.query.id);
-  if (product) {
-    await db.disconnect();
+  try {
+    await Product.findByIdAndDelete(req.query.id);
     res.send({ message: "Product deleted" });
-  } else {
-    await db.disconnect();
+  } catch (error) {
     res.status(404).send({ message: "Product not found" });
   }
 };

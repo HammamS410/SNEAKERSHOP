@@ -1,5 +1,4 @@
 import User from "@/models/User";
-import db from "@/utils/db";
 import { getSession } from "next-auth/react";
 
 const handler = async (req, res) => {
@@ -16,16 +15,16 @@ const handler = async (req, res) => {
 };
 
 const deleteHandler = async (req, res) => {
-  await db.connect();
-  const user = await User.findByIdAndDelete(req.query.id);
-  if (user) {
-    if (user.email === "admin@example.com") {
-      return res.status(400).send({ message: "Can't delete admin" });
+  try {
+    const user = await User.findById(req.query.id);
+    if (user) {
+      if (user.email === "admin@example.com") {
+        return res.status(400).send({ message: "Cant delete admin" });
+      }
+      await User.findByIdAndDelete(req.query.id);
     }
-    await db.disconnect();
     res.send({ message: "User Deleted" });
-  } else {
-    await db.disconnect();
+  } catch (error) {
     res.status(404).send({ message: "User not found" });
   }
 };

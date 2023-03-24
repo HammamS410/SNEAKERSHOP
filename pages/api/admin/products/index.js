@@ -7,7 +7,7 @@ const handler = async (req, res) => {
   if (!session || !session.user.isAdmin) {
     return res.status(401).send({ message: "admin signin required" });
   }
-  // const { user } = session;
+
   if (req.method === "GET") {
     return getHandler(req, res);
   } else if (req.method === "POST") {
@@ -32,8 +32,9 @@ const postHandler = async (req, res) => {
     discount: 5,
     description: "sample description",
   });
+  const product = await newProduct.save();
   await db.disconnect();
-  res.send({ message: "Product successfully created" }, newProduct);
+  res.send({ message: "Product created successfully", product });
 };
 
 const getHandler = async (req, res) => {
