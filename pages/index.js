@@ -30,7 +30,7 @@ export default function Home({ products, featuredProducts }) {
 
   return (
     <Layout title="Home Page">
-      <Carousel showThumbs={false} autoPlay className="relative">
+      <Carousel showThumbs={false} autoPlay>
         {featuredProducts.map((product) => (
           <div key={product._id}>
             <Link legacyBehavior href={`/product/${product.slug}`}>
