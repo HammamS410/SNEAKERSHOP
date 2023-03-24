@@ -13,6 +13,8 @@ const productSchema = new mongoose.Schema(
     countInStock: { type: Number, required: true, default: 0 },
     discount: { type: Number, required: false, default: 0 },
     description: { type: String, required: true },
+    isFeatured: { type: Boolean, default: false },
+    banner: String,
   },
   {
     timestamps: true,

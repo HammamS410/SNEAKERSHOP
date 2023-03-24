@@ -28,6 +28,8 @@ const data = {
       countInStock: 12,
       discount: 0.1,
       description: "Nike Air Jordan series",
+      isFeatured: true,
+      banner: "/images/Nike Air Jordan 1.jpg",
     },
     {
       name: "Nike Air Jordan Low",
@@ -41,6 +43,8 @@ const data = {
       countInStock: 10,
       discount: 10,
       description: "Nike Air Jordan Low series",
+      isFeatured: true,
+      banner: "/images/Nike Air Jordan 2.jpg",
     },
     {
       name: "Adidas Matchcourt",
@@ -54,6 +58,8 @@ const data = {
       countInStock: 8,
       discount: 10,
       description: "Adidas Skateboarding Series",
+      isFeatured: true,
+      banner: "/images/Adidas Matchcourt 1.jpg",
     },
     {
       name: "Adidas Nizza",
@@ -67,6 +73,8 @@ const data = {
       countInStock: 5,
       discount: 10,
       description: "Adidas Shoes casual Series",
+      isFeatured: true,
+      banner: "/images/Adidas Nizza 1.jpg",
     },
     {
       name: "Vans Oldschool",
@@ -80,6 +88,8 @@ const data = {
       countInStock: 0,
       discount: 5,
       description: "Vans Shoes Series",
+      isFeatured: true,
+      banner: "/images/Vans Old School 1.jpg",
     },
     {
       name: "Vans Slip On",
@@ -93,6 +103,8 @@ const data = {
       countInStock: 30,
       discount: 5,
       description: "Vans Shoes Series",
+      isFeatured: true,
+      banner: "/images/Vans Slip on 1.jpeg",
     },
     {
       name: "Puma Suede",
@@ -106,6 +118,8 @@ const data = {
       countInStock: 10,
       discount: 25,
       description: "Puma Shoes Series",
+      isFeatured: true,
+      banner: "/images/Puma Suede 1.jpeg",
     },
   ],
 };
